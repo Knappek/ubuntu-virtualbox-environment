@@ -20,9 +20,12 @@
     chefdk_deb_checksum: "sha256:83e5fcb7efa840755a56db0ada03747f7b5d2385c41455d06039f76b7cf66699"
     # this will create workspace directories in /home/<username>/
     workspace_dirs: [ workspace/eon/infrastructure, workspace/eon/cookbooks ]
-
+  
+  vars_files:
+    - ssh_config.yml
 
   tasks:
+
   - name: Update apt cache
     become: yes
     apt: update_cache=yes
@@ -97,7 +100,7 @@
   - name: deploy ssh config file
     become: yes
     copy: 
-      src: ssh_config 
+      content: "{{ ssh_config }}" 
       dest: "/home/{{ user_name }}/.ssh/config" 
       owner: "{{ user_name }}" 
       group: "{{ user_name }}"

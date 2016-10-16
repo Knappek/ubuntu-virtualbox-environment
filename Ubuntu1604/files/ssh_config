@@ -1,0 +1,22 @@
+Host *
+ServerAliveInterval 100
+ 
+# Vertical Dev
+Host 40.113.106.205
+  ForwardAgent yes
+ 
+# Vertical PDEV
+Host 52.166.202.95
+  ForwardAgent yes
+ 
+# Vertical QA
+Host 40.68.221.197
+  ForwardAgent yes
+ 
+# Vertical PROD
+Host 13.95.156.210
+  ForwardAgent yes
+ 
+# Shark Prod
+Host 40.68.170.78
+  ForwardAgent yes

@@ -1,0 +1,173 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: all
+
+  vars:
+    user_name: a.knapp
+    user_password: $6$JSmJhvCCGyq.pX$iT93E7uuft/Ud.6PV1zij6yg/sod8s2oI4wPymNW/TXog0hhXFfn2CFsD74JoFjyOOQ7uXbxMgRTxt14H/Kmm1
+    # The XKB keyboard layout name: Sets the keyboard language (de: german, us: english)
+    keyboard_layout: de
+    deploy_bashrc: yes
+    deploy_private_ssh_key: yes
+    src_private_ssh_key: ~/.ssh/id_rsa
+    packages_to_install: [
+      vim, nodejs, npm, git, git-flow, tree, docker.io, ruby2.3-dev, vagrant, virtualbox
+    ]
+    ruby_gems_to_install: [ kitchen-docker ]
+    install_chef: yes
+    chefdk_deb_url: "https://packages.chef.io/stable/ubuntu/12.04/chefdk_0.18.30-1_amd64.deb"
+    chefdk_deb_filename: /tmp/chefdk.deb
+    chefdk_deb_checksum: "sha256:83e5fcb7efa840755a56db0ada03747f7b5d2385c41455d06039f76b7cf66699"
+    # this will create workspace directories in /home/<username>/
+    workspace_dirs: [ workspace/eon/infrastructure, workspace/eon/cookbooks ]
+
+
+  tasks:
+  - name: Update apt cache
+    become: yes
+    apt: update_cache=yes
+  
+  - name: Allow 'sudo' group to have passwordless sudo
+    become: yes
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%sudo'
+      line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+
+  - name: Create User
+    become: yes
+    user: >
+      name={{ user_name }}
+      password={{ user_password }}
+      shell=/bin/bash
+      groups=sudo
+      append=yes
+
+  - name: install keyboard-configuration
+    become: yes
+    apt:
+      name: keyboard-configuration
+      state: present
+
+  - name: write keyboard configration
+    become: yes
+    template:
+      src: keyboard.j2
+      dest: /etc/default/keyboard
+      force: yes
+      owner: root
+      group: root
+      mode: 'u=rw,go=r'
+    register: keyboard_config
+
+  - name: apply keyboard configration
+    become: yes
+    command: /usr/sbin/dpkg-reconfigure -f noninteractive keyboard-configuration
+    when: keyboard_config.changed
+
+  - name: deploy bashrc file
+    become: yes
+    template: 
+      src: .bashrc.j2 
+      dest: "/home/{{ user_name }}/.bashrc"
+      owner: "{{ user_name }}"
+      group: "{{ user_name }}"
+    when: "{{ deploy_bashrc }}"
+
+  - name: Create .ssh directory
+    become: yes
+    file: 
+      path: "/home/{{ user_name }}/.ssh" 
+      state: directory
+      owner: "{{ user_name }}" 
+      group: "{{ user_name }}" 
+    when: "{{ deploy_private_ssh_key }}"
+
+  - name: deploy private ssh key
+    become: yes
+    copy: 
+      src: "{{ src_private_ssh_key }}"
+      dest: "/home/{{ user_name }}/.ssh/id_rsa"
+      owner: "{{ user_name }}" 
+      group: "{{ user_name }}" 
+      mode: "u+r,g-rwx,o-rwx"
+    when: "{{ deploy_private_ssh_key }}"
+
+  - name: deploy ssh config file
+    become: yes
+    copy: 
+      src: ssh_config 
+      dest: "/home/{{ user_name }}/.ssh/config" 
+      owner: "{{ user_name }}" 
+      group: "{{ user_name }}"
+
+  - name: install ubuntu packages
+    become: yes
+    apt: pkg={{ item }} state=installed
+    with_items: "{{ packages_to_install }}"
+
+  - name: install node.js packages with npm
+    become: yes
+    npm: name={{ item }} global=yes
+    with_items:
+      - azure-cli
+
+  - name: check if chefdk is installed
+    command: dpkg-query -W chefdk
+    register: is_chefdk_installed
+    failed_when: is_chefdk_installed.rc > 1
+    changed_when: is_chefdk_installed.rc == 1
+    notify:
+      - download chefdk
+    when: "{{ install_chef }}"
+  
+  - name: use ruby2.3 per default
+    become: yes
+    file: path=/usr/bin/ruby src=/usr/bin/ruby2.3 state=link
+    
+  - name: use gem2.3 per default
+    become: yes
+    file: path=/usr/bin/gem src=/usr/bin/gem2.3 state=link
+
+  - name: install ruby gems
+    become: yes
+    gem: name={{ item  }} state=latest
+    with_items: '{{ ruby_gems_to_install }}'
+
+  - name: Create workspace directories
+    become: yes
+    file: 
+      path: "/home/{{ user_name }}/{{ item }}" 
+      state: directory
+      owner: "{{ user_name }}" 
+      group: "{{ user_name }}" 
+    with_items: "{{ workspace_dirs }}"
+    
+
+  handlers:
+  - name: download chefdk
+    get_url: url='{{ chefdk_deb_url }}' dest='{{ chefdk_deb_filename }}' checksum='{{ chefdk_deb_checksum }}'
+    notify:
+      - install chefdk
+
+  - name: install chefdk
+    become: yes
+    apt: deb="{{ chefdk_deb_filename }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

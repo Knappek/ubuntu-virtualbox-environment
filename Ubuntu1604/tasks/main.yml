@@ -4,12 +4,17 @@
 
   vars:
     user_name: a.knapp
-    user_password: $6$JSmJhvCCGyq.pX$iT93E7uuft/Ud.6PV1zij6yg/sod8s2oI4wPymNW/TXog0hhXFfn2CFsD74JoFjyOOQ7uXbxMgRTxt14H/Kmm1
+    # create a password with mkpasswd: See Readme for usage
+    user_password: $6$rounds=5000$BpIHpb3bpGT63YXl$84p2KgSN.BsyyFU4MHj4dSG2o8HmbAaW5G/79D7btsPFqZPRd6nMf3BpP7cWhjMbMHdRwh6tr2NaFzSJ63Qu31
     # The XKB keyboard layout name: Sets the keyboard language (de: german, us: english)
     keyboard_layout: de
-    deploy_bashrc: yes
-    deploy_private_ssh_key: yes
+    # if not set or path is wrong, this will be skipped
+    src_bashrc: ~/.bashrc
+    # if not set or path is wrong, this will be skipped
     src_private_ssh_key: ~/.ssh/id_rsa
+    # if not set or path is wrong, this will be skipped
+    src_ssh_config: ~/.ssh/eon/config
+
     packages_to_install: [
       vim, nodejs, npm, git, git-flow, tree, docker.io, ruby2.3-dev, vagrant, virtualbox
     ]
@@ -20,9 +25,6 @@
     chefdk_deb_checksum: "sha256:83e5fcb7efa840755a56db0ada03747f7b5d2385c41455d06039f76b7cf66699"
     # this will create workspace directories in /home/<username>/
     workspace_dirs: [ workspace/eon/infrastructure, workspace/eon/cookbooks ]
-  
-  vars_files:
-    - ssh_config.yml
 
   tasks:
 
@@ -68,16 +70,20 @@
     become: yes
     command: /usr/sbin/dpkg-reconfigure -f noninteractive keyboard-configuration
     when: keyboard_config.changed
-
+  
+  - local_action: stat path={{ src_bashrc }}
+    register: bashrc
+  - debug: msg="the path {{ src_bashrc }} does not exist on your local PC - copy skipped"
+    when: bashrc.stat.exists == False
   - name: deploy bashrc file
     become: yes
     template: 
-      src: .bashrc.j2 
+      src: "{{ src_bashrc }}"
       dest: "/home/{{ user_name }}/.bashrc"
       owner: "{{ user_name }}"
       group: "{{ user_name }}"
-    when: "{{ deploy_bashrc }}"
-
+    when: bashrc.stat.exists
+  
   - name: Create .ssh directory
     become: yes
     file: 
@@ -85,8 +91,11 @@
       state: directory
       owner: "{{ user_name }}" 
       group: "{{ user_name }}" 
-    when: "{{ deploy_private_ssh_key }}"
 
+  - local_action: stat path={{ src_private_ssh_key }}
+    register: private_ssh_key
+  - debug: msg="the path {{ src_private_ssh_key }} does not exist on your local PC - copy skipped"
+    when: private_ssh_key.stat.exists == False
   - name: deploy private ssh key
     become: yes
     copy: 
@@ -95,15 +104,20 @@
       owner: "{{ user_name }}" 
       group: "{{ user_name }}" 
       mode: "u+r,g-rwx,o-rwx"
-    when: "{{ deploy_private_ssh_key }}"
-
+    when: private_ssh_key.stat.exists
+ 
+  - local_action: stat path={{ src_ssh_config }}
+    register: ssh_config
+  - debug: msg="the path {{ src_ssh_config }} does not exist on your local PC - copy skipped"
+    when: ssh_config.stat.exists == False
   - name: deploy ssh config file
     become: yes
     copy: 
-      content: "{{ ssh_config }}" 
+      src: "{{ src_ssh_config }}" 
       dest: "/home/{{ user_name }}/.ssh/config" 
       owner: "{{ user_name }}" 
       group: "{{ user_name }}"
+    when: ssh_config.stat.exists
 
   - name: install ubuntu packages
     become: yes

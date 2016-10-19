@@ -11,13 +11,10 @@ vagrant_config = configs['configs'][configs['configs']['use']]
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
-
-  # install Ubuntu 16.04
-  config.vm.box = "ubuntu/xenial64"
-  config.vm.hostname = "Ubuntu-16.04"
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://atlas.hashicorp.com/search.
+  #config.vm.box = "kevinmellott91/ubuntu-16.04-desktop-amd64"
+  config.vm.box = "marcoaltieri/ubuntu-desktop-16.04-64bit"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -25,13 +22,14 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
   config.vm.synced_folder "syncData", "/vagrant_data"
 
+  config.ssh.username = "vagrant"
+  config.ssh.password = "vagrant"
+
+  config.vm.network "private_network", ip: "192.168.50.4"
+
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = true
-    # TODO 
-    # http://stackoverflow.com/questions/18878117/using-vagrant-to-run-virtual-machines-with-desktop-environment
-    #
-
   
     # Customize the amount of memory on the VM:
     vb.customize ["modifyvm", :id, "--memory", vagrant_config['ram']]
@@ -39,18 +37,13 @@ Vagrant.configure("2") do |config|
     # enable 3D acceleration
     vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
 
-    # TODO
-    # enable guest addition: https://gist.github.com/fernandoaleman/5083680
-  end
-   
-  # Disable the new default behavior introduced in Vagrant 1.7, to
-  # ensure that all Vagrant machines will use the same SSH key pair.
-  # See https://github.com/mitchellh/vagrant/issues/5005
-  config.ssh.insert_key = false
+    #
+    # Run Ansible from the Vagrant Host
+    #
+    config.vm.provision "ansible" do |ansible|
+      ansible.playbook = "tasks/main.yml"
+      ansible.vault_password_file = ".vault_password_file"
+    end
 
-  # provision VM with Ansible
- # config.vm.provision "ansible" do |ansible|
- #    ansible.verbose = "v"
- #    ansible.playbook = "playbook.yml"
- # end
+  end
 end

@@ -1,7 +1,0 @@
----
-configs:
-    use: 'home'
-    office:
-        ram: '8192'
-    home:
-        ram: '4096'

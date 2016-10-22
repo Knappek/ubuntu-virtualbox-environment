@@ -36,11 +36,14 @@ Usage
   2. create a file called `.vault_password_file` in the same directory as the Vagrantfile. This file should include your personal password which will be used to encrypt and decrypt files
   3. go to directory `files` in your shell
   4. run: `ansible-vault create git-credentials.yml`, enter your password which you have placed into `.vault_password_file` and add this content to that file:
+  
     ```yml
+
     ---
     git: 
       user: <username>
       password: <your password>
+
     ```
 10. start the VirtualBox
 11. go back to the directory `Ubuntu1604` in your terminal and run `vagrant up`

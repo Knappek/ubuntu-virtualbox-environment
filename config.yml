@@ -1,0 +1,11 @@
+---
+configs:
+    use: 'home'
+    office:
+        ram: '8192'
+        hdd_size_in_gb: 60
+        swap_size_in_gb: 8
+    home:
+        ram: '4096'
+        hdd_size_in_gb: 20
+        swap_size_in_gb: 8

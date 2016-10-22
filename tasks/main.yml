@@ -20,10 +20,19 @@
     ]
     ruby_gems_to_install: [ kitchen-docker ]
     # choose `yes` or `no`if you want to have the chefDK to be installed or not
-    install_chef: yes
+    install_chef: no
     chefdk_deb_url: "https://packages.chef.io/stable/ubuntu/12.04/chefdk_0.18.30-1_amd64.deb"
     chefdk_deb_filename: /tmp/chefdk.deb
     chefdk_deb_checksum: "sha256:83e5fcb7efa840755a56db0ada03747f7b5d2385c41455d06039f76b7cf66699"
+
+    install_atom: no
+    atom_deb_url: "https://github.com/atom/atom/releases/download/v1.11.2/atom-amd64.deb"
+    atom_deb_filename: /tmp/atom.deb
+
+    install_visual_studio_code: yes
+    visual_studio_code_url: "https://go.microsoft.com/fwlink/?LinkID=760868"
+    visual_studio_code_deb_filename: /tmp/code.deb
+
     
     # with gitlab_mainurl and workspaces, this playbook will automatically create workspace directories and 
     # clone some projects inside them. 
@@ -172,6 +181,24 @@
     gem: name={{ item  }} state=latest
     with_items: '{{ ruby_gems_to_install }}'
 
+  - name: check if Atom is installed
+    command: dpkg-query -W atom
+    register: is_atom_installed
+    failed_when: is_atom_installed.rc > 1
+    changed_when: is_atom_installed.rc == 1
+    notify:
+      - download atom
+    when: "{{ install_atom }}"
+
+  - name: check if Visual Studio Code is installed
+    command: dpkg-query -W code
+    register: is_visual_studio_code_installed
+    failed_when: is_visual_studio_code_installed.rc > 1
+    changed_when: is_visual_studio_code_installed.rc == 1
+    notify:
+      - download visual studio code
+    when: "{{ install_visual_studio_code }}"
+
   - name: Create workspace directories
     become: yes
     file: 
@@ -180,6 +207,7 @@
       owner: "{{ user_name }}" 
       group: "{{ user_name }}" 
     with_items: "{{ workspaces }}"
+    when: item.0 is defined
 
   - git: 
       repo: https://{{ git.user }}:{{ git.password }}@{{ gitlab_mainurl }}/{{ item.0.git_group }}/{{ item.1 }}.git
@@ -201,6 +229,24 @@
   - name: install chefdk
     become: yes
     apt: deb="{{ chefdk_deb_filename }}"
+
+  - name: download atom
+    get_url: url='{{ atom_deb_url }}' dest='{{ atom_deb_filename }}'
+    notify:
+      - install atom
+
+  - name: install atom
+    become: yes
+    apt: deb="{{ atom_deb_filename }}"
+
+  - name: download visual studio code
+    get_url: url='{{ visual_studio_code_url }}' dest='{{ visual_studio_code_deb_filename }}'
+    notify:
+      - install visual studio code
+
+  - name: install visual studio code
+    become: yes
+    apt: deb="{{ visual_studio_code_deb_filename }}"
 
 
 

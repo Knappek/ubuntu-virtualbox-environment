@@ -20,7 +20,7 @@
     ]
     ruby_gems_to_install: [ kitchen-docker ]
     # choose `yes` or `no`if you want to have the chefDK to be installed or not
-    install_chef: no
+    install_chef: yes
     chefdk_deb_url: "https://packages.chef.io/stable/ubuntu/12.04/chefdk_0.18.30-1_amd64.deb"
     chefdk_deb_filename: /tmp/chefdk.deb
     chefdk_deb_checksum: "sha256:83e5fcb7efa840755a56db0ada03747f7b5d2385c41455d06039f76b7cf66699"

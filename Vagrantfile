@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
   file_to_disk = "ext_hdd_disk.vdi"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "ubuntu1604"
+    vb.name = "Ubuntu1604"
     # Display the VirtualBox GUI when booting the machine
     vb.gui = true
   

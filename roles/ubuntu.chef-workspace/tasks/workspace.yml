@@ -1,0 +1,20 @@
+---
+- name: Create workspace directories
+  become: yes
+  file: 
+    path: "/home/{{ user_name }}/{{ item.name }}" 
+    state: directory
+    owner: "{{ user_name }}" 
+    group: "{{ user_name }}" 
+  with_items: "{{ workspaces }}"
+  when: item.0 is defined and create_workspace
+
+- git: 
+    repo: https://{{ git.user }}:{{ git.password }}@{{ gitlab_mainurl }}/{{ item.0.git_group }}/{{ item.1 }}.git
+    dest: /home/{{ user_name }}/{{ item.0.name }}/{{ item.1 }}
+  become: yes
+  become_user: "{{ user_name }}" 
+  with_subelements:
+    - "{{ workspaces }}"
+    - git_projects
+  when: create_workspace

@@ -1,0 +1,7 @@
+---
+- hosts: all
+  roles:
+      - { role: "ubuntu.chef-workspace" }
+    
+  vars_files:
+      - roles/ubuntu.chef-workspace/vars/git-credentials.yml

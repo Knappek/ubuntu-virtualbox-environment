@@ -1,0 +1,59 @@
+---
+
+- name: install ubuntu packages
+  become: yes
+  apt: pkg={{ item }} state=installed
+  with_items: "{{ packages_to_install }}"
+
+- name: install node.js packages with npm
+  become: yes
+  npm: name={{ item }} global=yes
+  with_items:
+    - azure-cli
+
+- name: check if chefdk is installed
+  command: dpkg-query -W chefdk
+  register: is_chefdk_installed
+  failed_when: is_chefdk_installed.rc > 1
+  changed_when: is_chefdk_installed.rc == 1
+  notify:
+    - download chefdk
+  when: "{{ install_chef }}"
+
+# - name: use ruby2.3 per default
+#   become: yes
+#   file: path=/usr/bin/ruby src=/usr/bin/ruby2.3 state=link
+  
+# - name: use gem2.3 per default
+#   become: yes
+#   file: path=/usr/bin/gem src=/usr/bin/gem2.3 state=link
+
+- name: install ruby gems for local user
+  become: yes
+  gem: name={{ item  }} state=latest user_install=no
+  with_items: '{{ ruby_gems_to_install }}'
+
+# - name: install ruby gems for root user
+#   become: yes
+#   gem: name={{ item  }} state=latest
+#   with_items: '{{ ruby_gems_to_install }}'
+
+- name: check if Atom is installed
+  command: dpkg-query -W atom
+  register: is_atom_installed
+  failed_when: is_atom_installed.rc > 1
+  changed_when: is_atom_installed.rc == 1
+  notify:
+    - download atom
+  when: "{{ install_atom }}"
+
+- name: check if Visual Studio Code is installed
+  command: dpkg-query -W code
+  register: is_visual_studio_code_installed
+  failed_when: is_visual_studio_code_installed.rc > 1
+  changed_when: is_visual_studio_code_installed.rc == 1
+  notify:
+    - download visual studio code
+  when: "{{ install_visual_studio_code }}"
+
+

@@ -13,9 +13,8 @@ vagrant_config = configs['configs'][configs['configs']['use']]
 Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  #config.vm.box = "kevinmellott91/ubuntu-16.04-desktop-amd64"
   config.vm.box = "marcoaltieri/ubuntu-desktop-16.04-64bit"
-  # config.vm.box = "geerlingguy/ubuntu1604"
+
 
 
   # Share an additional folder to the guest VM. The first argument is
@@ -69,7 +68,7 @@ Vagrant.configure("2") do |config|
 
   # Run Ansible from the Vagrant Host
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "tasks/main.yml"
+    ansible.playbook = "site.yml"
     ansible.vault_password_file = ".vault_password_file"
   end
 

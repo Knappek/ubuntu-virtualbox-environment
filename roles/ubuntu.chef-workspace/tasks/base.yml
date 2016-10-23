@@ -1,0 +1,101 @@
+---
+
+- name: Update apt cache
+  become: yes
+  apt: update_cache=yes
+
+- name: Allow 'sudo' group to have passwordless sudo
+  become: yes
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%sudo'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+
+- name: Create User
+  become: yes
+  user: >
+    name={{ user_name }}
+    password={{ user_password }}
+    shell=/bin/bash
+    groups=sudo
+    append=yes
+
+- name: install keyboard-configuration
+  become: yes
+  apt:
+    name: keyboard-configuration
+    state: present
+
+- name: write keyboard configration
+  become: yes
+  template:
+    src: keyboard.j2
+    dest: /etc/default/keyboard
+    force: yes
+    owner: root
+    group: root
+    mode: 'u=rw,go=r'
+  register: keyboard_config
+
+- name: apply keyboard configration
+  become: yes
+  command: /usr/sbin/dpkg-reconfigure -f noninteractive keyboard-configuration
+  when: keyboard_config.changed
+
+- name: disable screen blackout
+  become: yes
+  become_user: "{{ user_name }}"
+  command: gsettings set org.gnome.desktop.session idle-delay 0 
+
+- name: disable screen lock
+  become: yes
+  command: gsettings set org.gnome.desktop.screensaver lock-enabled false 
+
+- local_action: stat path={{ src_bashrc }}
+  register: bashrc
+- debug: msg="the path {{ src_bashrc }} does not exist on your local PC - copy skipped"
+  when: bashrc.stat.exists == False
+- name: deploy bashrc file
+  become: yes
+  template: 
+    src: "{{ src_bashrc }}"
+    dest: "/home/{{ user_name }}/.bashrc"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+  when: bashrc.stat.exists
+
+- name: Create .ssh directory
+  become: yes
+  file: 
+    path: "/home/{{ user_name }}/.ssh" 
+    state: directory
+    owner: "{{ user_name }}" 
+    group: "{{ user_name }}" 
+
+- local_action: stat path={{ src_private_ssh_key }}
+  register: private_ssh_key
+- debug: msg="the path {{ src_private_ssh_key }} does not exist on your local PC - copy skipped"
+  when: private_ssh_key.stat.exists == False
+- name: deploy private ssh key
+  become: yes
+  copy: 
+    src: "{{ src_private_ssh_key }}"
+    dest: "/home/{{ user_name }}/.ssh/id_rsa"
+    owner: "{{ user_name }}" 
+    group: "{{ user_name }}" 
+    mode: "u+r,g-rwx,o-rwx"
+  when: private_ssh_key.stat.exists
+
+- local_action: stat path={{ src_ssh_config }}
+  register: ssh_config
+- debug: msg="the path {{ src_ssh_config }} does not exist on your local PC - copy skipped"
+  when: ssh_config.stat.exists == False
+- name: deploy ssh config file
+  become: yes
+  copy: 
+    src: "{{ src_ssh_config }}" 
+    dest: "/home/{{ user_name }}/.ssh/config" 
+    owner: "{{ user_name }}" 
+    group: "{{ user_name }}"
+  when: ssh_config.stat.exists

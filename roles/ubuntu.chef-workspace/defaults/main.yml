@@ -1,0 +1,59 @@
+---
+
+user_name: a.knapp
+# create a password with mkpasswd: See Readme for usage
+user_password: $6$rounds=5000$BpIHpb3bpGT63YXl$84p2KgSN.BsyyFU4MHj4dSG2o8HmbAaW5G/79D7btsPFqZPRd6nMf3BpP7cWhjMbMHdRwh6tr2NaFzSJ63Qu31
+# The XKB keyboard layout name: Sets the keyboard language (de: german, us: english)
+keyboard_layout: de
+# set the path to your .bashrc if you want it to be deployed. If not set or path is wrong, this will be skipped
+src_bashrc: ~/.bashrc
+# set the path to your private key if you want it to be deployed. If not set or path is wrong, this will be skipped
+src_private_ssh_key: ~/.ssh/id_rsa
+# set the path to your ssh config file if you want it to be deployed. If not set or path is wrong, this will be skipped
+src_ssh_config: ~/.ssh/eon/config
+
+packages_to_install: [
+  vim, nodejs, npm, git, git-flow, tree, docker.io, ruby2.3-dev, vagrant, virtualbox
+]
+
+ruby_gems_to_install: [ 
+  # addressable, artifactory, multipart-post, httpclient, buff-extensions, hashie, buff-ignore, buff-ruby_engine, 
+  # hitimes, nio4r, fuzzyurl, mixlib-config, mixlib-shellout, json, mixlib-log, retryable, semverse, cleanroom, 
+  # minitar, molinillo, mixlib-versioning, net-ssh, safe_yaml, faraday, varia_model, buff-shell_out, timers, 
+  # chef-config, mixlib-authentication, mixlib-archive, solve, mixlib-install, net-ssh-gateway, sawyer, buff-config, 
+  # celluloid, test-kitchen, octokit, celluloid-io, kitchen-vagrant, ridley, berkshelf-api-client, berkshelf, kitchen-docker
+  berkshelf, test-kitchen, kitchen-vagrant, kitchen-docker
+]
+# choose `yes` or `no`if you want to have the chefDK to be installed or not
+install_chef: yes
+chefdk_deb_url: "https://packages.chef.io/files/stable/chef/12.15.19/ubuntu/16.04/chef_12.15.19-1_amd64.deb"
+# chefdk_deb_url: "https://packages.chef.io/stable/ubuntu/12.04/chefdk_0.19.6-1_amd64.deb"
+chefdk_deb_filename: /tmp/chefdk.deb
+# chefdk_deb_checksum: "sha256:e6e121bf1955c37f604a40c102ce1e797ed854ea1cbecb9ab380e4e342618fd2"
+
+install_atom: no
+atom_deb_url: "https://github.com/atom/atom/releases/download/v1.11.2/atom-amd64.deb"
+atom_deb_filename: /tmp/atom.deb
+
+install_visual_studio_code: yes
+visual_studio_code_url: "https://go.microsoft.com/fwlink/?LinkID=760868"
+visual_studio_code_deb_filename: /tmp/code.deb
+
+
+# with gitlab_mainurl and workspaces, this playbook will automatically create workspace directories and 
+# clone some projects inside them. 
+# A workspace directory will be created to /home/<username>/<name> where the corresponding Git projects will be cloned into.
+create_workspace: yes
+gitlab_mainurl: git.dev.eon.com
+workspaces:
+  - name: workspace/eon/infrastructure
+    git_group: espp-infrastructure
+    git_projects: 
+      - espp-network-arm
+      - chef-repo-espp-shark-pdev
+      - chef-repo-espp-shark-dev
+  - name: workspace/eon/cookbooks
+    git_group: espp-cookbooks
+    git_projects: 
+      - espp_base
+      - espp_batch_jobs

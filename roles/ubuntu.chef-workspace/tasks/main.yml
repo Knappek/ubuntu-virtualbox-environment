@@ -1,0 +1,9 @@
+#!/usr/bin/env ansible-playbook
+---
+  # - include: docker_ubuntu.yml
+
+- include: base.yml
+
+- include: packages.yml
+
+- include: workspace.yml

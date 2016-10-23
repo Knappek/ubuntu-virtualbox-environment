@@ -70,7 +70,7 @@ There is an error during `vagrant up`:
 ==> default: : 
 ==> default: Inappropriate ioctl for device
 
-``
+```
 
 ### Solution 1
 can be just ignored

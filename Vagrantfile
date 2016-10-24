@@ -66,10 +66,12 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", path: "increase_swap.sh", args: (vagrant_config['swap_size_in_gb'] * 1000).to_s
   end
 
-  # Run Ansible from the Vagrant Host
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "site.yml"
-    ansible.vault_password_file = ".vault_password_file"
+  if vagrant_config['unix']
+    # Run Ansible from the Vagrant Host
+    config.vm.provision "ansible" do |ansible|
+      ansible.playbook = "site.yml"
+      ansible.vault_password_file = ".vault_password_file"
+    end
   end
 
 end

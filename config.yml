@@ -2,10 +2,12 @@
 configs:
     use: 'home'
     office:
+        unix: no
         ram: '8192'
         hdd_size_in_gb: 60
         swap_size_in_gb: 8
     home:
+        unix: no
         ram: '4096'
         hdd_size_in_gb: 20
         swap_size_in_gb: 8

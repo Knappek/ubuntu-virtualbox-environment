@@ -13,16 +13,11 @@ src_private_ssh_key: ~/.ssh/id_rsa
 src_ssh_config: ~/.ssh/config
 
 packages_to_install: [
-  vim, nodejs, npm, git, git-flow, tree, docker.io, ruby2.3-dev, vagrant, virtualbox, knife-push
+  vim, nodejs, npm, git, git-flow, tree, docker.io, ruby2.3-dev, vagrant, virtualbox
 ]
 
 ruby_gems_to_install: [ 
-  # addressable, artifactory, multipart-post, httpclient, buff-extensions, hashie, buff-ignore, buff-ruby_engine, 
-  # hitimes, nio4r, fuzzyurl, mixlib-config, mixlib-shellout, json, mixlib-log, retryable, semverse, cleanroom, 
-  # minitar, molinillo, mixlib-versioning, net-ssh, safe_yaml, faraday, varia_model, buff-shell_out, timers, 
-  # chef-config, mixlib-authentication, mixlib-archive, solve, mixlib-install, net-ssh-gateway, sawyer, buff-config, 
-  # celluloid, test-kitchen, octokit, celluloid-io, kitchen-vagrant, ridley, berkshelf-api-client, berkshelf, kitchen-docker
-  berkshelf, test-kitchen, kitchen-vagrant, kitchen-docker
+  berkshelf, test-kitchen, kitchen-vagrant, kitchen-docker, knife-push
 ]
 # choose `yes` or `no`if you want to have the chefDK to be installed or not
 install_chef: yes

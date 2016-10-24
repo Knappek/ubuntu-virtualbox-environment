@@ -7,7 +7,7 @@ configs:
         hdd_size_in_gb: 60
         swap_size_in_gb: 8
     home:
-        unix: no
+        unix: yes
         ram: '4096'
         hdd_size_in_gb: 20
         swap_size_in_gb: 8

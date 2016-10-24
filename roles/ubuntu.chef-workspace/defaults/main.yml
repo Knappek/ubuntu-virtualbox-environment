@@ -39,7 +39,6 @@ install_visual_studio_code: yes
 visual_studio_code_url: "https://go.microsoft.com/fwlink/?LinkID=760868"
 visual_studio_code_deb_filename: /tmp/code.deb
 
-
 # with gitlab_mainurl and workspaces, this playbook will automatically create workspace directories and 
 # clone some projects inside them. 
 # A workspace directory will be created to /home/<username>/<name> where the corresponding Git projects will be cloned into.

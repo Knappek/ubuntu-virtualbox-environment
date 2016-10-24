@@ -10,7 +10,7 @@ src_bashrc: ~/.bashrc
 # set the path to your private key if you want it to be deployed. If not set or path is wrong, this will be skipped
 src_private_ssh_key: ~/.ssh/id_rsa
 # set the path to your ssh config file if you want it to be deployed. If not set or path is wrong, this will be skipped
-src_ssh_config: ~/.ssh/eon/config
+src_ssh_config: ~/.ssh/config
 
 packages_to_install: [
   vim, nodejs, npm, git, git-flow, tree, docker.io, ruby2.3-dev, vagrant, virtualbox

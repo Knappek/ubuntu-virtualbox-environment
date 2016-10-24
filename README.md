@@ -60,7 +60,7 @@ Usage
 11. That's it, your VM will be created in the VirtualBox. 
 
 
-### on Windows
+### on Windows (or separately created VM with another provider such as VMWare)
 
 #### Requirements
 * Install Git command line tool: https://git-scm.com/downloads

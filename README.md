@@ -16,11 +16,13 @@ This project will set up a Virtual machine in VirtualBox using Vagrant where the
 Usage
 -----
 
-## on UNIX OS
+### on UNIX OS
 
-### Requirements
+#### Requirements
 * Install Git command line tool: https://git-scm.com/downloads
 * Install Ansible: http://docs.ansible.com/ansible/intro_installation.html
+
+#### Setup
 
 1. Clone this project: `git clone https://github.com/Knappek/ansible.git`
 2. Open config.yml and determine if you are in office or home and adjust the parameters
@@ -58,10 +60,12 @@ Usage
 11. That's it, your VM will be created in the VirtualBox. 
 
 
-## on Windows
+### on Windows
 
-### Requirements
+#### Requirements
 * Install Git command line tool: https://git-scm.com/downloads
+
+#### Setup
 
 1. Clone this project: `git clone https://github.com/Knappek/ansible.git`
 2. Open config.yml and determine if you are in office or home and adjust the parameters

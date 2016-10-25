@@ -17,7 +17,7 @@ packages_to_install: [
 ]
 
 ruby_gems_to_install: [
-  berkshelf, test-kitchen, kitchen-vagrant, kitchen-docker, knife-push
+  berkshelf, kitchen-vagrant, kitchen-docker, knife-push
 ]
 # choose `yes` or `no`if you want to have the chefDK to be installed or not
 install_chef: yes

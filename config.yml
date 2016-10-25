@@ -1,6 +1,6 @@
 ---
 configs:
-    use: 'home'
+    use: 'office'
     office:
         unix: no
         ram: '8192'

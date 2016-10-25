@@ -9,7 +9,7 @@ This project will set up a Virtual machine in VirtualBox using Vagrant where the
 * Visual Studio Code Editor (optional)
 
 ## Requirements
-* Download VirtualBox: https://www.virtualbox.org/wiki/Downloads. 
+* Download VirtualBox: https://www.virtualbox.org/wiki/Downloads.
 * Make sure you have the Oracle VM VirtualBox Extension Pack installed: https://www.virtualbox.org/wiki/Downloads
 * Download and Install Vagrant: https://www.vagrantup.com/downloads.html
 
@@ -33,13 +33,13 @@ Usage
 3. make sure to fulfill the prerequisites
 4. Open `roles/ubuntu.chef-workspace/defaults/main.yml`
 5. change the username
-6. Create a sha-512 hashed User Password: 
+6. Create a sha-512 hashed User Password:
   1. open https://www.mkpasswd.net/index.php
   2. enter your password
   3. choose type `crypt-sha512`
   4. click `Hash` and copy and paste the output to `user_password`
 7. check the other variables and adapt them to your wishes
-8. `vars_files`: 
+8. `vars_files`:
   1. delete the encrypted file `roles/ubuntu.chef-workspace/vars/git-credentials.yml as you need to create a new one with your own encryption key
   2. create a file called `.vault_password_file` in the same directory as the `Vagrantfile`. This file should include your personal password which will be used to encrypt and decrypt files
   3. go to directory `roles/ubuntu.chef-workspace/vars` in your shell
@@ -48,7 +48,7 @@ Usage
     ```yml
 
     ---
-    git: 
+    git:
       user: <username>
       password: <your password>
 
@@ -56,8 +56,8 @@ Usage
 
     where you replace `<username>` and `<your password>` with you git username and password
 9. start the VirtualBox
-10. go back to the root directory of this project in your shell and run `vagrant up` 
-11. That's it, your VM will be created in the VirtualBox. 
+10. go back to the root directory of this project in your shell and run `vagrant up`
+11. That's it, your VM will be created in the VirtualBox.
 
 
 ### on Windows (or separately created VM with another provider such as VMWare)
@@ -74,20 +74,21 @@ Usage
   3. `hdd_size_in_gb`: hard drive disk size in GB (integer)
   4. `swap_size_in_gb`: Swap size in GB (integer)
 3. start the VirtualBox
-4. open a shell (e.g. Git Bash), cd to the directory of the `Vagrantfile` and run `vagrant up` 
+4. open a shell (e.g. Git Bash), cd to the directory of the `Vagrantfile` and run `vagrant up`
 5. After the VM has been created, log in with the `vagrant` user and `vagrant` password
 6. Open the terminal
-7. Run: `sudo apt-get install vim git python-pip`
+7. Run: `sudo apt-get install build-essential libssl-dev libffi-dev python-dev vim git python-pip`
 8. Run: `sudo pip install ansible`
-9. Open `roles/ubuntu.chef-workspace/defaults/main.yml`
-10. change the username
-11. Create a sha-512 hashed User Password: 
+9. Clone this project: `git clone https://github.com/Knappek/ansible.git`
+10. Open `roles/ubuntu.chef-workspace/defaults/main.yml`
+11. change the username
+12. Create a sha-512 hashed User Password:
   1. open https://www.mkpasswd.net/index.php
   2. enter your password
   3. choose type `crypt-sha512`
   4. click `Hash` and copy and paste the output to `user_password`
-11. check the other variables and adapt them to your wishes
-12. If you have chosen `yes` for the variable `create_workspace`  do the following steps: 
+13. check the other variables and adapt them to your wishes
+14. If you have chosen `yes` for the variable `create_workspace`  do the following steps:
   1. delete the encrypted file `roles/ubuntu.chef-workspace/vars/git-credentials.yml as you need to create a new one with your own encryption key
   2. create a file called `.vault_password_file` in the same directory as the `sity.yml`. This file should include your personal password which will be used to encrypt and decrypt files
   3. go to directory `roles/ubuntu.chef-workspace/vars` in your shell
@@ -96,7 +97,7 @@ Usage
     ```yml
 
     ---
-    git: 
+    git:
       user: <username>
       password: <your password>
 
@@ -121,9 +122,9 @@ There is an error during `vagrant up`:
 
 ```
 
-==> default: mesg: 
+==> default: mesg:
 ==> default: ttyname failed
-==> default: : 
+==> default: :
 ==> default: Inappropriate ioctl for device
 
 ```
@@ -138,4 +139,3 @@ can be just ignored
 
 ### Solution 2
 run `vagrant up` or `vagrant provision` again.
-

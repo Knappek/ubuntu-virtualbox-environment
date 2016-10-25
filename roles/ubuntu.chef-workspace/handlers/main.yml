@@ -1,6 +1,6 @@
 ---
 - name: download chefdk
-  get_url: url='{{ chefdk_deb_url }}' dest='{{ chefdk_deb_filename }}'
+  get_url: url='{{ chefdk_deb_url }}' dest='{{ chefdk_deb_filename }}' checksum='{{chefdk_deb_checksum}}'
   notify:
     - install chefdk
 

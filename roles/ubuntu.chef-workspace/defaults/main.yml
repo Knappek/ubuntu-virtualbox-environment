@@ -17,7 +17,7 @@ src_private_ssh_key: ~/.ssh/id_rsa
 src_ssh_config: ~/.ssh/config
 
 packages_to_install: [
-  vim, nodejs, npm, git, git-flow, tree, docker.io, ruby2.3-dev, vagrant, virtualbox, filters
+  vim, nodejs, npm, git, git-flow, tree, docker.io, ruby2.3-dev, vagrant, virtualbox
 ]
 
 ruby_gems_to_install: [

@@ -1,12 +1,12 @@
 ---
 
 # set to yes if you create the VM with this ansible script
-vagrant_setup: no
+vagrant_setup: yes
 
 # Linux username
 user_name: andy
 # create a Linux password with mkpasswd: See Readme for usage
-user_password: $6$buhLAvhwu/nM9Ixy$An.n76lRS5TvO1lO31Af3nnFyLU72cqBpDT8uof1nEIDTMDWaJdfUqhrsVHDYN8p3znftKsory44gDuEJO8mD0
+user_password: $6$VITCsG5FGwtkotB7$8/bP/IZyJJ.k.qHfHiivAwmKW6.3xYkSo67pvphYkPREQ6kVK4FaSFIOW5S0fLxbtWKFR//bw4yaP.5O/evQ80
 # The XKB keyboard layout name: Sets the keyboard language (de: german, us: english)
 keyboard_layout: de
 # set the path to your .bashrc if you want it to be deployed. If not set or path is wrong, this will be skipped
@@ -17,7 +17,7 @@ src_private_ssh_key: ~/.ssh/id_rsa
 src_ssh_config: ~/.ssh/config
 
 packages_to_install: [
-  vim, nodejs, npm, git, git-flow, tree, docker.io, ruby2.3-dev, vagrant, virtualbox
+  vim, nodejs, npm, git, git-flow, tree, docker.io, ruby, vagrant, virtualbox
 ]
 
 ruby_gems_to_install: [

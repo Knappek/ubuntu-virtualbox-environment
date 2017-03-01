@@ -80,7 +80,7 @@ If you have already created a VM in your VirtualBox (or VMWare) then you can ski
 4. open a shell (e.g. Git Bash), cd to the directory of the `Vagrantfile` and run `vagrant up`
 5. After the VM has been created, log in with the `vagrant` user and `vagrant` password
 6. Open the terminal
-7. Run: `sudo apt-get install build-essential libssl-dev libffi-dev python-dev vim git python-pip`
+7. Run: `sudo apt-get install build-essential libssl-dev libffi-dev python-dev vim git python-pip ansible`
 8. Run: `pip install ansible`
 9. Clone this project: `git clone https://github.com/Knappek/ansible.git`
 10. Open `roles/ubuntu.chef-workspace/defaults/main.yml`

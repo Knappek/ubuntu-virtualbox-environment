@@ -68,7 +68,7 @@ Usage
 
 #### Setup
 
-If you have already created a VM in your VirtualBox (or VMWare) then you can skip steps 1.-5. Otherwise steps 1.-5. will explain how to create a VM with vagrant.
+If you have already created a VM in your VirtualBox (or VMWare) then you can skip steps 1.-5, although it is highly recommended to start from point zero to not have any unexpected problems.
 
 1. Clone this project: `git clone https://github.com/Knappek/ansible.git`
 2. Open config.yml and determine if you are in office or home and adjust the parameters

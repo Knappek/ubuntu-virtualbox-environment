@@ -12,7 +12,7 @@
     - azure-cli
 
 - name: Create Symlink for node to use Azure CLI
-  file: path=/usr/bin/nodejs src=/usr/bin/node state=link
+  file: path=/usr/bin/node src=/usr/bin/nodejs state=link
   become: yes
 
 - name: check if chefdk is installed

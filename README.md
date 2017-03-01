@@ -32,14 +32,15 @@ Usage
   4. `swap_size_in_gb`: Swap size in GB (integer)
 3. make sure to fulfill the prerequisites
 4. Open `roles/ubuntu.chef-workspace/defaults/main.yml`
-5. change the username
-6. Create a sha-512 hashed User Password:
-  1. open https://www.mkpasswd.net/index.php
-  2. enter your password
-  3. choose type `crypt-sha512`
-  4. click `Hash` and copy and paste the output to `user_password`
-7. check the other variables and adapt them to your wishes
-8. `vars_files`:
+  1. Set `vagrant_setup` to `yes`
+  2. change the username
+  3. Create a sha-512 hashed User Password and paste it to `user_password`:
+    1. open https://www.mkpasswd.net/index.php
+    2. enter your password
+    3. choose type `crypt-sha512`
+    4. click `Hash` and copy and paste the output to `user_password`
+    5. check the other variables and adapt them to your wishes
+5. `vars_files`:
   1. delete the encrypted file `roles/ubuntu.chef-workspace/vars/git-credentials.yml as you need to create a new one with your own encryption key
   2. create a file called `.vault_password_file` in the same directory as the `Vagrantfile`. This file should include your personal password which will be used to encrypt and decrypt files
   3. go to directory `roles/ubuntu.chef-workspace/vars` in your shell
@@ -55,9 +56,9 @@ Usage
     ```
 
     where you replace `<username>` and `<your password>` with you git username and password
-9. start the VirtualBox
-10. go back to the root directory of this project in your shell and run `vagrant up`
-11. That's it, your VM will be created in the VirtualBox.
+6. start the VirtualBox
+7. go back to the root directory of this project in your shell and run `vagrant up`
+8. That's it, your VM will be created in the VirtualBox.
 
 
 ### on Windows (or separately created VM with another provider such as VMWare)
@@ -66,6 +67,8 @@ Usage
 * Install Git command line tool: https://git-scm.com/downloads
 
 #### Setup
+
+If you have already created a VM in your VirtualBox (or VMWare) then you can skip steps 1.-5. Otherwise steps 1.-5. will explain how to create a VM with vagrant.
 
 1. Clone this project: `git clone https://github.com/Knappek/ansible.git`
 2. Open config.yml and determine if you are in office or home and adjust the parameters
@@ -78,21 +81,22 @@ Usage
 5. After the VM has been created, log in with the `vagrant` user and `vagrant` password
 6. Open the terminal
 7. Run: `sudo apt-get install build-essential libssl-dev libffi-dev python-dev vim git python-pip`
-8. Run: `sudo pip install ansible`
+8. Run: `pip install ansible`
 9. Clone this project: `git clone https://github.com/Knappek/ansible.git`
 10. Open `roles/ubuntu.chef-workspace/defaults/main.yml`
-11. change the username
-12. Create a sha-512 hashed User Password:
+11. Set `vagrant_setup` to `no` if you have created the VM manually (hence if you skipped steps 1-5)
+12. change the username
+13. Create a sha-512 hashed User Password and paste it to `user_password`:
   1. open https://www.mkpasswd.net/index.php
   2. enter your password
   3. choose type `crypt-sha512`
   4. click `Hash` and copy and paste the output to `user_password`
-13. check the other variables and adapt them to your wishes
-14. If you have chosen `yes` for the variable `create_workspace`  do the following steps:
-  1. delete the encrypted file `roles/ubuntu.chef-workspace/vars/git-credentials.yml as you need to create a new one with your own encryption key
-  2. create a file called `.vault_password_file` in the same directory as the `sity.yml`. This file should include your personal password which will be used to encrypt and decrypt files
-  3. go to directory `roles/ubuntu.chef-workspace/vars` in your shell
-  4. run: `ansible-vault create git-credentials.yml`, enter your password which you have placed into `.vault_password_file` and add this content to that file:
+14. check the other variables and adapt them to your wishes
+15. If you have chosen `yes` for the variable `create_workspace`  do the following steps:
+    1. delete the encrypted file `roles/ubuntu.chef-workspace/vars/git-credentials.yml as you need to create a new one with your own encryption key
+    2. create a file called `.vault_password_file` in the same directory as the `sity.yml`. This file should include your personal password which will be used to encrypt and decrypt files
+    3. go to directory `roles/ubuntu.chef-workspace/vars` in your shell
+    4. run: `ansible-vault create git-credentials.yml`, enter your password which you have placed into `.vault_password_file` and add this content to that file:
 
     ```yml
 
@@ -105,7 +109,7 @@ Usage
 
     where you replace `<username>` and `<your password>` with you git username and password
 
-13. in the same directory as `sity.yml` run
+16. in the same directory as `sity.yml` run
     ```bash
     ansible-playbook site.yml --vault-password .vault_password_file --connection=local
     ```

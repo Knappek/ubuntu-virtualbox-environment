@@ -20,14 +20,16 @@
     shell=/bin/bash
     groups=sudo
     append=yes
+  when: vagrant_setup
 
 - name: install keyboard-configuration
   become: yes
   apt:
     name: keyboard-configuration
     state: present
+  when: vagrant_setup
 
-- name: write keyboard configration
+- name: write keyboard configuration
   become: yes
   template:
     src: keyboard.j2
@@ -37,8 +39,9 @@
     group: root
     mode: 'u=rw,go=r'
   register: keyboard_config
+  when: vagrant_setup
 
-- name: apply keyboard configration
+- name: apply keyboard configuration
   become: yes
   command: /usr/sbin/dpkg-reconfigure -f noninteractive keyboard-configuration
   when: keyboard_config.changed
@@ -47,6 +50,7 @@
   become: yes
   become_user: "{{ user_name }}"
   command: gsettings set org.gnome.desktop.session idle-delay 0 
+  when: vagrant_setup
 
 - name: disable screen lock
   become: yes

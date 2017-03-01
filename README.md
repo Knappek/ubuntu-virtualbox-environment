@@ -80,7 +80,7 @@ If you have already created a VM in your VirtualBox (or VMWare) then you can ski
 4. open a shell (e.g. Git Bash), cd to the directory of the `Vagrantfile` and run `vagrant up`
 5. After the VM has been created, log in with the `vagrant` user and `vagrant` password
 6. Open the terminal
-7. Run: `sudo apt-get install build-essential libssl-dev libffi-dev python-dev vim git python-pip`
+7. Run: `sudo apt-get install build-essential libssl-dev libffi-dev python-dev vim git python-pip ansible`
 8. Run: `pip install ansible`
 9. Clone this project: `git clone https://github.com/Knappek/ansible.git`
 10. Open `roles/ubuntu.chef-workspace/defaults/main.yml`
@@ -94,7 +94,7 @@ If you have already created a VM in your VirtualBox (or VMWare) then you can ski
 14. check the other variables and adapt them to your wishes
 15. If you have chosen `yes` for the variable `create_workspace`  do the following steps:
     1. delete the encrypted file `roles/ubuntu.chef-workspace/vars/git-credentials.yml as you need to create a new one with your own encryption key
-    2. create a file called `.vault_password_file` in the same directory as the `sity.yml`. This file should include your personal password which will be used to encrypt and decrypt files
+    2. create a file called `.vault_password_file` in the same directory as the `site.yml`. This file should include your personal password which will be used to encrypt and decrypt files
     3. go to directory `roles/ubuntu.chef-workspace/vars` in your shell
     4. run: `ansible-vault create git-credentials.yml`, enter your password which you have placed into `.vault_password_file` and add this content to that file:
 
@@ -109,7 +109,7 @@ If you have already created a VM in your VirtualBox (or VMWare) then you can ski
 
     where you replace `<username>` and `<your password>` with you git username and password
 
-16. in the same directory as `sity.yml` run
+16. in the same directory as `site.yml` run
     ```bash
     ansible-playbook site.yml --vault-password .vault_password_file --connection=local
     ```

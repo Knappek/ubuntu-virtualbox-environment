@@ -96,7 +96,7 @@ If you have already created a VM in your VirtualBox (or VMWare) then you can ski
     1. delete the encrypted file `roles/ubuntu.chef-workspace/vars/git-credentials.yml as you need to create a new one with your own encryption key
     2. create a file called `.vault_password_file` in the same directory as the `sity.yml`. This file should include your personal password which will be used to encrypt and decrypt files
     3. go to directory `roles/ubuntu.chef-workspace/vars` in your shell
-    4. run: `sudo ansible-vault create git-credentials.yml`, enter your password which you have placed into `.vault_password_file` and add this content to that file:
+    4. run: `ansible-vault create git-credentials.yml`, enter your password which you have placed into `.vault_password_file` and add this content to that file:
 
     ```yml
 

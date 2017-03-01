@@ -1,27 +1,27 @@
 ---
 - name: download chefdk
-  get_url: url='{{ chefdk_deb_url }}' dest='{{ chefdk_deb_filename }}' checksum='{{chefdk_deb_checksum}}'
+  get_url: url={{chefdk_deb_url}} dest={{ chefdk_deb_filename}} checksum={{chefdk_deb_checksum}}
   notify:
-    - install chefdk
+    - install_chefdk
 
-- name: install chefdk
+- name: install_chefdk
   become: yes
-  apt: deb="{{ chefdk_deb_filename }}"
+  apt: deb={{chefdk_deb_filename}}
 
 - name: download atom
-  get_url: url='{{ atom_deb_url }}' dest='{{ atom_deb_filename }}'
+  get_url: url={{atom_deb_url}} dest={{atom_deb_filename}}
   notify:
     - install atom
 
 - name: install atom
   become: yes
-  apt: deb="{{ atom_deb_filename }}"
+  apt: deb={{atom_deb_filename}}
 
 - name: download visual studio code
-  get_url: url='{{ visual_studio_code_url }}' dest='{{ visual_studio_code_deb_filename }}'
+  get_url: url={{visual_studio_code_url}} dest={{visual_studio_code_deb_filename}}
   notify:
     - install visual studio code
 
 - name: install visual studio code
   become: yes
-  apt: deb="{{ visual_studio_code_deb_filename }}"
+  apt: deb={{visual_studio_code_deb_filename}}
